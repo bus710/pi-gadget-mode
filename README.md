@@ -70,16 +70,16 @@ network={
 
 ## 2. Access to RPI4
 
-Boot the rpi with the card and use one of below options.
+Boot the rpi with the card and access via serial console or ssh.
 
-Also, the default ID/PW: 
+Also, the default ID/PW is: 
 - pi
 - raspberry
 <br/>
 
 ### 2.1 Option 1 - serial console
 
-Use this commmand if USB to serial cable is available:
+Use these commmands if USB to serial cable is available:
 
 ```sh
 $ sudo apt install minicom
