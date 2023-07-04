@@ -63,7 +63,16 @@ network={
 }
 ```
 
-Unmount the card.
+<br/>
+
+### 1.3 Remove the security warning
+
+There was a new security rule to create a new user other than pi during 2022. To avoid:
+```sh
+$ rm /media/$USER/rootfs/etc/ssh/sshd_config.d/rename_user.conf
+```
+
+Then unmount the card.
 
 <br/>
 
