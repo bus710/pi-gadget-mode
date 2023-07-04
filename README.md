@@ -74,6 +74,15 @@ There was a new security rule to create a new user other than pi during 2022. To
 $ sudo rm /media/$USER/rootfs/etc/ssh/sshd_config.d/rename_user.conf
 ```
 
+A new ID/PW should be created:
+```sh
+$ touch /media/$USER/bootfs/userconf
+
+# To fill the file with ID and encrypted PW
+$ PW=$(echo 'mypassword' | openssl passwd -6 -stdin)
+$ echo pi:$PW >> /media/$USER/bootfs/userconf
+```
+
 Then unmount the card.
 
 <br/>
@@ -82,9 +91,9 @@ Then unmount the card.
 
 Boot the rpi with the card and access via serial console or ssh.
 
-Also, the default ID/PW is: 
+Also, the ID/PW is (as created above): 
 - pi
-- raspberry
+- mypassword
 <br/>
 
 ### 2.1 Option 1 - serial console
