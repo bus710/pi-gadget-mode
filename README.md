@@ -110,64 +110,9 @@ $ hostname -I
 $ nmap -sP 192.168.x.0/24 # if the hostname command returned 192.168.x.x
 ```
 
-The default password is **raspberry**.
-
-<br/><br/>
-
-### 2.3 Boot from SSD 
-
-As of today (March 2020), RPI4 doesn't support booting from USB.  
-However, some tweak can change to use root (/) directory of external SSD.
-- https://jamesachambers.com/raspberry-pi-4-usb-boot-config-guide-for-ssd-flash-drives/
-
-Currently, these devices are being used:
-- Orico's USB-C to SATA3 enclosure (this uses VIA Lab chipset inside)
-- WD Green SSD 128GB
-
-The steps are simple:
-- Burn Raspbian Buster for both SD card and SSD
-- Create the **ssh** and **wpa_cupplicant.conf** for SD card's boot partition as above
-- Boot RPI with SD card only
-- After boot, access RPI4 via SSH or serial console (but don't do update or config anything)
-- Attach SSD and check USB ID of SSD with **lsusb** command
-- Add **usb-storage.quirks=2109:0715:u** to /boot/cmdline.txt of SD card
-- Do these for SSD to change disk identifier
-  - sudo fdisk /dev/sda
-  - p (to see the existing partitions)
-  - x (to enter the expert mode)
-  - i (to change disk identifier)
-  - 0xd34db33f (new disk identifier)
-  - r (to leave the expert mode)
-  - w (to write changes)
-- New disk identifier change be checked by **sudo blkid**
-- Edit /boot/cmdline.txt of SD card
-  - from root=PARTUUID=**6c586e13-02**
-  - to root=PARTUUID=**d34db33f-02**
-- Update /etc/fstab
-  - from PARTUUID=**6c586e13-02**
-  - to PARTUUID=**d34db33f-02**
-- Create the **ssh** and **wpa_cupplicant.conf** for SD card's boot partition as above (Yes, **AGAIN**)
-- Add **dtoverlay=dwc2** to /boot/config.txt (**AGAIN**)
-- Reboot
-- Try **findmnt -n -o SOURCE /**
-- Do these for SSD to resize disk size
-  - sudo fdisk /dev/sda (please remember the first sector of sda2. mostlikely, it is 532480)
-  - p (to see the existing partitions)
-  - d (to delete partition)
-  - 2 (to specify partition sda2)
-  - n (to create new partition)
-  - p (to specify primary partition)
-  - 2 (to specify partition sda2)
-  - 532480 (to set the first sector)
-  - enter (to set the last sector)
-  - n (for "do you want to remove the signature?")
-  - w (to write changes)
-- reboot
-- df -h (at this time the size is same as before)
-- sudo resize2fs /dev/sda2
-- df -h (now the size is as configured)
-
-Now SSD is the root disk with its max size.
+The default ID/PW: 
+- pi
+- raspberry
 
 <br/><br/>
 
