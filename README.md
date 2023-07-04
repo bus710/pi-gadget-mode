@@ -1,33 +1,23 @@
 # pi-gadget-mode
 
-This doc describes how to activate RPI4's USB-C gadget mode.
-
-<br/><br/>
-
-## Reference
-
-- https://www.hardill.me.uk/wordpress/2019/11/02/pi4-usb-c-gadget/
-- https://support.speedify.com/article/576-turning-a-raspberry-pi-into-a-speedify-usb-gadget
-- https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget
-- https://www.thepolyglotdeveloper.com/2016/06/connect-raspberry-pi-zero-usb-cable-ssh/
-- https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md
-- https://www.ssh.com/ssh/copy-id
+This doc describes how to activate RPI4's USB-C gadget mode with some scripts.
 
 <br/><br/>
 
 ## Prerequisite
 
-Please find and flash the Raspbian OS image to a micro SD card.
-- https://www.raspberrypi.org/downloads/raspbian/
-- Buster (or newer)
+Please find and flash the Raspbian OS Lite image to a micro SD card.
+- https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
+- Bullseye (or newer)
 
 <br/><br/>
 
 ## 0. Flash OS image to SD card
 
-Flash the zip file to SD card:
+Flash the zip file to SD card ($TARGET can be /dev/sda, /dev/sdb, or /dev/sdc):
 ```sh
-$ unzip -p raspbian.zip raspbian.img | dd of=/dev/sdb bs=1M
+$ xzcat 2023-05-03-raspios-bullseye-arm64.img.xz| \
+	sudo dd of=$TARGET bs=8M oflag=dsync status=progress
 ```
 
 <br/><br/>
@@ -43,8 +33,8 @@ enable_uart=1
 
 Create a file to activate ssh:
 
-```
-touch /boot/ssh
+```sh
+$ touch /boot/ssh
 ```
 
 <br/><br/>
@@ -53,8 +43,8 @@ touch /boot/ssh
 
 Create a file to activate WIFI:
 
-```
-touch /boot/wpa_supplicant.conf
+```sh
+$ touch /boot/wpa_supplicant.conf
 ```
 
 The content should be:
@@ -81,7 +71,7 @@ network={
 Boot the rpi with the card and use one of below options.
 <br/><br/>
 
-### 2.1 Option 1: serial console
+### 2.1 Option 1 - serial console
 
 Use this commmand if USB to serial cable is available:
 
@@ -94,7 +84,7 @@ The hardware flow control (of minicom) should be disabled.
 
 <br/><br/>
 
-### 2.2 Option 2: ssh 
+### 2.2 Option 2 - ssh 
 
 Use this command if WIFI is available:
 
@@ -125,8 +115,8 @@ $ sudo raspi-config
 ```
 
 - Change the password
-- Set the host name to be pipi4b
-- Enable the sshd
+- Set the host name to be something you like
+- Enable sshd
 
 <br/><br/>
 
@@ -178,11 +168,11 @@ Dnsmasq works as a DHCP server and it will only assign IP addresses to the USB-a
 
 Create a new file:
 
-```
+```sh
 $ sudo touch /etc/dnsmasq.d/usb
 ```
 
-Add this to the file:
+Add these to the file:
 
 ```
 interface=usb0
@@ -199,7 +189,7 @@ With these config, the USB port will have the fixed IP address.
 
 Create a new file:
 
-```
+```sh
 $ sudo touch /etc/network/interfaces.d/usb0 
 ```
 
@@ -217,8 +207,9 @@ iface usb0 inet static
 
 ## 9. Reboot RPI
 
-The basic settings are done!  
-Please reboot and the USB port can be used as ethernet so that connect the RPI4 to the host via USB-C.
+The basic settings are done!
+
+Please connect the RPI4 to the host PC via USB cable, so that it reboots and the USB port can be used as ethernet.
 
 <br/><br/>
 
@@ -233,27 +224,3 @@ $ nmap 10.55.0.1
 
 <br/><br/>
 
-## 11. No password login
-
-To enable the no password login, follow these steps **from the host**:
-
-```sh
-$ ssh-keygen -t rsa -b 2048 -v # file name should be test but no phrase
-$ ssh-copy-id -i .ssh/test.pub pi@10.55.0.1 -p 2222 
-$ ssh -p 2222 pi@10.55.0.1
-
-# If the key is not established, the ownership might be the matter
-$ chmod 600 test
-$ chmod 644 test.pub
-```
-
-Some tips
-- The keygen command might ask a phrase but don't have to put anything. 
-- The copy id should be done for every client.
-- If ever logged in before this step with ssh, please delete the latest line in the **.ssh/known_hosts** to remove a key. That is because there will be multiple ssh keys.
-
-<br/><br/>
-
-## Conclusion
-
-With the steps, the rpi can be powered and accessed with only 1 USB cable. This reduces the compexity of the connection so that the space can be much more productive!
