@@ -24,7 +24,9 @@ $ xzcat 2023-05-03-raspios-bullseye-arm64.img.xz| \
 
 ## 1. In the SD card
 
-Add these lines to the **/boot/config.txt**:
+### 1.1 Booting params
+
+Add these lines to the **/media/$USER/bootfs/config.txt**:
 
 ```
 dtoverlay=dwc2
@@ -34,7 +36,7 @@ enable_uart=1
 Create a file to activate ssh:
 
 ```sh
-$ touch /boot/ssh
+$ touch /media/$USER/bootfs/ssh
 ```
 
 <br/>
@@ -44,7 +46,7 @@ $ touch /boot/ssh
 Create a file to activate WIFI:
 
 ```sh
-$ touch /boot/wpa_supplicant.conf
+$ touch /media/$USER/bootfs/wpa_supplicant.conf
 ```
 
 The content should be:
@@ -57,8 +59,8 @@ fast_reauth=1
 country=US
 
 network={
-	ssid="AP-NAME"
-	psk="AP-PASSWORD"
+	ssid=$AP-NAME
+	psk=$AP-PASSWORD
 	id_str="0"
 	priority=100
 }
@@ -69,7 +71,11 @@ network={
 ## 2. Access to RPI4
 
 Boot the rpi with the card and use one of below options.
-<br/><br/>
+
+Also, the default ID/PW: 
+- pi
+- raspberry
+<br/>
 
 ### 2.1 Option 1 - serial console
 
@@ -100,10 +106,6 @@ $ hostname -I
 $ nmap -sP 192.168.x.0/24 # if the hostname command returned 192.168.x.x
 ```
 
-The default ID/PW: 
-- pi
-- raspberry
-
 <br/>
 
 ## 3. Raspi-config
@@ -115,7 +117,7 @@ $ sudo raspi-config
 ```
 
 - Change the password
-- Set the host name to be something you like
+- Set the host name
 - Enable sshd
 
 <br/>
