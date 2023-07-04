@@ -27,14 +27,12 @@ $ xzcat 2023-05-03-raspios-bullseye-arm64-lite.img.xz| \
 ### 1.1 Booting params
 
 Add these lines to the **/media/$USER/bootfs/config.txt**:
-
 ```
 dtoverlay=dwc2
 enable_uart=1
 ```
 
 Create a file to activate ssh:
-
 ```sh
 $ touch /media/$USER/bootfs/ssh
 ```
@@ -44,13 +42,12 @@ $ touch /media/$USER/bootfs/ssh
 ### 1.2 WIFI setup for Raspbian OS
 
 Create a file to activate WIFI:
-
 ```sh
 $ touch /media/$USER/bootfs/wpa_supplicant.conf
 ```
 
 The content should be:
-
+- The AP-NAME and AP-PASSWORD should be surrounded by double quotes.
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -59,12 +56,14 @@ fast_reauth=1
 country=US
 
 network={
-	ssid=$AP-NAME
-	psk=$AP-PASSWORD
+	ssid="$AP-NAME"
+	psk="$AP-PASSWORD"
 	id_str="0"
 	priority=100
 }
 ```
+
+Unmount the card.
 
 <br/>
 
@@ -93,13 +92,11 @@ The hardware flow control (of minicom) should be disabled.
 ### 2.2 Option 2 - ssh 
 
 Use this command if WIFI is available:
-
 ```
 $ ssh pi@raspberrypi.local
 ```
 
 If the hostname doesn't work:
-
 ```
 $ sudo apt install nmap
 $ hostname -I
@@ -111,31 +108,28 @@ $ nmap -sP 192.168.x.0/24 # if the hostname command returned 192.168.x.x
 ## 3. Raspi-config
 
 To configure the rpi4 via the terminal (this only works for Raspbian OS):
-
 ```
 $ sudo raspi-config
-```
 
-- Change the password
-- Set the host name
-- Enable sshd
+# Change the password
+# Set the host name
+# Enable sshd
+```
 
 <br/>
 
 ## 4. Secure shell daemon configuration
 
 Edit /etc/ssh/sshd_config:
-
-- Change the sshd to have port number  
-- Change ClientAliveInterval 120
-- Change ClientAliveCountMax 720
+- Change the sshd to have a certain port number  
+- Change ClientAliveInterval to 120
+- Change ClientAliveCountMax to 720
 
 <br/>
 
 ## 5. Install basic packages
 
 Install some packages first:
-
 ```
 $ sudo apt install vim git neofetch dnsmasq
 ```
@@ -145,19 +139,16 @@ $ sudo apt install vim git neofetch dnsmasq
 ## 6. Configurations for kernel module and network
 
 Add this to the **/boot/cmdline.txt**:
-
 ```
 modules-load=dwc2,g_ether
 ```
 
 Add this to the **/etc/modules**:
-
 ```
 libcomposite
 ```
 
 Add this to the **/etc/dhcpcd.conf**:
-
 ```
 denyinterfaces usb0
 ```
@@ -169,13 +160,11 @@ denyinterfaces usb0
 Dnsmasq works as a DHCP server and it will only assign IP addresses to the USB-attached devices (the host PC in our case).
 
 Create a new file:
-
 ```sh
 $ sudo touch /etc/dnsmasq.d/usb
 ```
 
 Add these to the file:
-
 ```
 interface=usb0
 dhcp-range=10.55.0.2,10.55.0.6,255.255.255.248,1h
@@ -190,13 +179,11 @@ leasefile-ro
 With these config, the USB port will have the fixed IP address.
 
 Create a new file:
-
 ```sh
 $ sudo touch /etc/network/interfaces.d/usb0 
 ```
 
 Add this to the file:
-
 ```
 auto usb0
 allow-hotplug usb0
