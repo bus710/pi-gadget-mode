@@ -20,6 +20,8 @@ $ xzcat 2023-05-03-raspios-bullseye-arm64-lite.img.xz| \
 	sudo dd of=$TARGET bs=8M oflag=dsync status=progress
 ```
 
+Then mount the newly created partitions (the paths might be /media/$USER/bootfs and roots).
+
 <br/>
 
 ## 1. In the SD card
