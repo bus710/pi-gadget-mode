@@ -16,7 +16,7 @@ Please find and flash the Raspbian OS Lite image to a micro SD card.
 
 Flash the zip file to SD card ($TARGET can be /dev/sda, /dev/sdb, or /dev/sdc):
 ```sh
-$ xzcat 2023-05-03-raspios-bullseye-arm64.img.xz| \
+$ xzcat 2023-05-03-raspios-bullseye-arm64-lite.img.xz| \
 	sudo dd of=$TARGET bs=8M oflag=dsync status=progress
 ```
 
