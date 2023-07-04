@@ -2,7 +2,7 @@
 
 This doc describes how to activate RPI4's USB-C gadget mode with some scripts.
 
-<br/><br/>
+<br/>
 
 ## Prerequisite
 
@@ -10,7 +10,7 @@ Please find and flash the Raspbian OS Lite image to a micro SD card.
 - https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-64-bit
 - Bullseye (or newer)
 
-<br/><br/>
+<br/>
 
 ## 0. Flash OS image to SD card
 
@@ -20,7 +20,7 @@ $ xzcat 2023-05-03-raspios-bullseye-arm64.img.xz| \
 	sudo dd of=$TARGET bs=8M oflag=dsync status=progress
 ```
 
-<br/><br/>
+<br/>
 
 ## 1. In the SD card
 
@@ -37,7 +37,7 @@ Create a file to activate ssh:
 $ touch /boot/ssh
 ```
 
-<br/><br/>
+<br/>
 
 ### 1.2 WIFI setup for Raspbian OS
 
@@ -64,7 +64,7 @@ network={
 }
 ```
 
-<br/><br/>
+<br/>
 
 ## 2. Access to RPI4
 
@@ -82,7 +82,7 @@ $ sudo minicom -b 115200 -o -D /dev/ttyUSB0
 
 The hardware flow control (of minicom) should be disabled.
 
-<br/><br/>
+<br/>
 
 ### 2.2 Option 2 - ssh 
 
@@ -104,7 +104,7 @@ The default ID/PW:
 - pi
 - raspberry
 
-<br/><br/>
+<br/>
 
 ## 3. Raspi-config
 
@@ -118,7 +118,7 @@ $ sudo raspi-config
 - Set the host name to be something you like
 - Enable sshd
 
-<br/><br/>
+<br/>
 
 ## 4. Secure shell daemon configuration
 
@@ -128,7 +128,7 @@ Edit /etc/ssh/sshd_config:
 - Change ClientAliveInterval 120
 - Change ClientAliveCountMax 720
 
-<br/><br/>
+<br/>
 
 ## 5. Install basic packages
 
@@ -138,7 +138,7 @@ Install some packages first:
 $ sudo apt install vim git neofetch dnsmasq
 ```
 
-<br/><br/>
+<br/>
 
 ## 6. Configurations for kernel module and network
 
@@ -160,7 +160,7 @@ Add this to the **/etc/dhcpcd.conf**:
 denyinterfaces usb0
 ```
 
-<br/><br/>
+<br/>
 
 ## 7. Dnsmasq configuration
 
@@ -181,7 +181,7 @@ dhcp-option=3
 leasefile-ro
 ```
 
-<br/><br/>
+<br/>
 
 ## 8. Fixed ip address for USB0
 
@@ -203,7 +203,7 @@ iface usb0 inet static
   netmask 255.255.255.248
 ```
 
-<br/><br/>
+<br/>
 
 ## 9. Reboot RPI
 
@@ -211,7 +211,7 @@ The basic settings are done!
 
 Please connect the RPI4 to the host PC via USB cable, so that it reboots and the USB port can be used as ethernet.
 
-<br/><br/>
+<br/>
 
 ## 10. Access to RPI with the fixed address
 
@@ -222,5 +222,5 @@ $ ping 10.55.0.1
 $ nmap 10.55.0.1
 ```
 
-<br/><br/>
+<br/>
 
