@@ -77,7 +77,7 @@ prep(){
     sudo bash -c "echo -e '
 interface=usb0
 dhcp-range=10.55.0.2,10.55.0.6,255.255.255.248,1h
-dhcp-option=3
+dhcp-option=3,192.168.1.1
 leasefile-ro' >> /etc/dnsmasq.d/usb"
 
     # For fixed IP addresses

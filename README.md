@@ -185,10 +185,11 @@ $ sudo touch /etc/dnsmasq.d/usb
 ```
 
 Add these to the file:
+- the dhcp-option sets the default gw address
 ```
 interface=usb0
 dhcp-range=10.55.0.2,10.55.0.6,255.255.255.248,1h
-dhcp-option=3
+dhcp-option=3,192.168.1.1
 leasefile-ro
 ```
 
@@ -210,6 +211,7 @@ allow-hotplug usb0
 iface usb0 inet static
   address 10.55.0.1
   netmask 255.255.255.248
+  gateway 192.168.1.1
 ```
 
 <br/>
