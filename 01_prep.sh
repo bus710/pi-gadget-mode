@@ -79,6 +79,7 @@ prep(){
     # Add those lines into the config.txt
     CONFIG_EXISTS=$(cat /media/$USER/bootfs/config.txt | grep dtoverlay=dwc2 | wc -l)
     if [[ $CONFIG_EXISTS == "0" ]]; then
+        echo "" >> /media/$USER/bootfs/config.txt
         echo "dtoverlay=dwc2" >> /media/$USER/bootfs/config.txt
         echo "enable_uart=1" >> /media/$USER/bootfs/config.txt
     fi
