@@ -50,7 +50,7 @@ prep(){
     term_color_white
 
     # Install some packages
-    sudo apt install -y
+    sudo apt install -y \
         vim git dnsmasq
 
     # Add the names of modules to load during boot
