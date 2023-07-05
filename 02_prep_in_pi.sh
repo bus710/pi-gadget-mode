@@ -55,13 +55,22 @@ prep(){
 
     # Add params to load kernel modules at boot time by bootloader
     CMDLINE=$(cat /boot/cmdline.txt)
-    sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
+    CMD_EXISTS=$(echo $CMDLINE | grep dwc2 | wc -l)
+    if [[ $CMD_EXISTS == "0" ]]; then
+        sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
+    fi
 
     # Add a line to load kernel modules at boot time by kernel
-    sudo bash -c "echo 'libcomposite' >> /etc/modules"
+    MODULES_EXISTS=$(echo /etc/modules | grep libcomposite | wc -l)
+    if [[ $MODULES_EXISTS == "0" ]]; then
+        sudo bash -c "echo 'libcomposite' >> /etc/modules"
+    fi
 
     # Add a line to prevent USB0 being configured for network by non-dnsmasq
-    sudo bash -c "echo 'denyinterfaces usb0' >> /etc/dhcpcd.conf"
+    DENY_EXISTS=$(echo /etc/dhcpcd.conf | grep debyinterfaces | wc -l)
+    if [[ $DENY_EXISTS == "0" ]]; then
+        sudo bash -c "echo 'denyinterfaces usb0' >> /etc/dhcpcd.conf"
+    fi
 
     # Configure dnsmasq
     sudo touch /etc/dnsmasq.d/usb
