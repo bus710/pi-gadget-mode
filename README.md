@@ -191,6 +191,7 @@ Add these to the file:
 interface=usb0
 dhcp-range=10.55.0.2,10.55.0.6,255.255.255.248,1h
 dhcp-option=3,192.168.1.1
+dhcp-option=6,8.8.8.8
 leasefile-ro
 ```
 
@@ -213,6 +214,7 @@ iface usb0 inet static
   address 10.55.0.1
   netmask 255.255.255.248
   gateway 192.168.1.1
+  dns-nameservers 8.8.8.8
 ```
 
 <br/>
