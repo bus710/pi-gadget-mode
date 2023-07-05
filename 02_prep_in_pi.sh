@@ -23,7 +23,10 @@ check_architecture(){
         exit
     fi
 
-    # TODO: check if the raspi-config command exists
+    if [[ ! -f "/usr/bin/raspi-config" ]]; then
+        echo "Cannot find the raspi-config binary"
+        exit
+    fi
 }
 
 confirmation(){
@@ -52,8 +55,7 @@ prep(){
 
     # Add the names of modules to load during boot
     CMDLINE=$(cat /boot/cmdline.txt)
-    sudo bash -c "echo '' > /boot/cmdline.txt"
-    sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' >> /boot/cmdline.txt"
+    sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
 
     # Add a line to load
     sudo bash -c "echo 'libcomposite' >> /etc/modules"
