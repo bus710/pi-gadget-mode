@@ -57,7 +57,8 @@ prep(){
     CMDLINE=$(cat /boot/cmdline.txt)
     CMD_EXISTS=$(echo $CMDLINE | grep dwc2 | wc -l)
     if [[ $CMD_EXISTS == "0" ]]; then
-        sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
+        #sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
+        sudo sed -i 's/rootwait/modules-load=dwc2,g_ether rootwait/g' /boot/cmdline.txt
     fi
 
     # Add a line to load kernel modules at boot time by kernel
