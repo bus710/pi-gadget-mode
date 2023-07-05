@@ -3,7 +3,6 @@
 set -e
 
 CPU_TYPE=$(uname -m)
-CPU_TARGET=""
 AP_NAME=""
 AP_PASSWORD=""
 
@@ -22,9 +21,9 @@ term_color_white () {
 
 check_architecture(){
     if [[ $CPU_TYPE == "x86_64" ]]; then
-        CPU_TARGET="amd64"
+        echo
     elif [[ $CPU_TYPE == "aarch64" ]]; then
-        CPU_TARGET="arm64"
+        echo
     else
         echo "Architecture $CPU_TYPE is not known"
         exit
@@ -70,7 +69,6 @@ confirmation(){
     echo
     read AP_PASSWORD
     echo
-
 }
 
 prep(){
@@ -122,6 +120,7 @@ network={
 post(){
     term_color_red
     echo "Done"
+    echo "Unmount the disk"
     term_color_white
 }
 
