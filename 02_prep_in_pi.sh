@@ -70,8 +70,7 @@ prep(){
     DENY_EXISTS=$(echo /etc/dhcpcd.conf | grep debyinterfaces | wc -l)
     if [[ $DENY_EXISTS == "0" ]]; then
         sudo bash -c "echo '' >> /etc/dhcpcd.conf"
-        sudo bash -c "echo 'interface usb0' >> /etc/dhcpcd.conf"
-        sudo bash -c "echo 'metric 0' >> /etc/dhcpcd.conf"
+        sudo bash -c "echo 'denyinterfaces usb0' >> /etc/dhcpcd.conf"
     fi
 
     # Configure dnsmasq

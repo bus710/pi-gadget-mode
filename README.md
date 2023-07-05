@@ -170,8 +170,7 @@ libcomposite
 
 Add this to the **/etc/dhcpcd.conf**:
 ```
-interface usb0
-metric 0
+denyinterfaces usb0
 ```
 
 <br/>
