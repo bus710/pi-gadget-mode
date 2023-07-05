@@ -78,7 +78,8 @@ auto usb0
 allow-hotplug usb0
 iface usb0 inet static
     address 10.55.0.1
-    netmask 255.255.255.248'"
+    netmask 255.255.255.248
+    gateway 192.168.1.1'"
 }
 
 post(){
