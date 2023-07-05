@@ -53,11 +53,11 @@ prep(){
     sudo apt install -y \
         vim git dnsmasq
 
-    # Add the names of modules to load during boot
+    # Add params to load kernel modules at boot time by bootloader
     CMDLINE=$(cat /boot/cmdline.txt)
     sudo bash -c "echo ${CMDLINE}' modules-load=dwc2,g_ether' > /boot/cmdline.txt"
 
-    # Add a line to load
+    # Add a line to load kernel modules at boot time by kernel
     sudo bash -c "echo 'libcomposite' >> /etc/modules"
 
     # Add a line to prevent USB0 being configured for network by non-dnsmasq
@@ -69,7 +69,7 @@ prep(){
 interface=usb0
 dhcp-range=10.55.0.2,10.55.0.6,255.255.255.248,1h
 dhcp-option=3
-leasefile-ro'"
+leasefile-ro' >> /etc/dnsmasq.d/usb"
 
     # For fixed IP addresses
     sudo touch /etc/network/interfaces.d/usb0
@@ -79,7 +79,7 @@ allow-hotplug usb0
 iface usb0 inet static
     address 10.55.0.1
     netmask 255.255.255.248
-    gateway 192.168.1.1'"
+    gateway 192.168.1.1' >> /etc/network/interfaces.d/usb0"
 }
 
 post(){
